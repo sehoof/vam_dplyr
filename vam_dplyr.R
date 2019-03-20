@@ -7,47 +7,47 @@ library(readstata13)
 # The paper and the replication data can be found under: https://www.nowpublishers.com/article/Details/QJPS-15108
 # The replication data is stored in a zip file under Supplementary Information.
 # We now have the .dta file already on Github (so no need to download it from the journal's site).
-mydata <- read.dta13("./data.dta")
+mydata <- readstata13::read.dta13("./data.dta")
 
 # Have a look at the data:
 mydata %>% View()
 
 # Mutate: Generate a new variable and store it in mydata:
-mydata <- mydata %>% mutate(percvote = voteshare*100)
+mydata <- mydata %>% dplyr::mutate(percvote = voteshare*100)
 # Check if the new variable "percvote" is now there:
 names(mydata)
 
 # Select: Select certain variables in your data:
-mydata %>% select(percvote)
+mydata %>% dplyr::select(percvote)
 # Use as_tibble() or head() to get a more compact view of the selected data:
-mydata %>% as_tibble() %>% select(percvote)
-mydata %>% select(percvote) %>% head()
+mydata %>% tibble::as_tibble() %>% dplyr::select(percvote)
+mydata %>% dplyr::select(percvote) %>% head()
 # Or a range of variables:
-mydata %>% as_tibble() %>% select(setting:year)
+mydata %>% tibble::as_tibble() %>% dplyr::select(setting:year)
 
 # Filter: Filter out observations of a certain value in your data:
 # For example, get all percentage voteshares above 50%:
-mydata %>% filter(percvote > 50)
+mydata %>% dplyr::filter(percvote > 50)
 # We could now also generate a subset of mydata with observations, which all fulfill this criterium
 # That is in this data: A subset with Democratic candidates who received above 50% of the votes in US elections:
-topcan <- mydata %>% filter(percvote > 50)
+topcan <- mydata %>% dplyr::filter(percvote > 50)
 # We still have all variables from mydata in the new subset "topcan", but reduced number of observations:
 names(topcan)
 # Another example: Get all observations from senate and gubernatorial elections:
-mydata %>% filter(setting %in% c("gov","senate")) 
+mydata %>% dplyr::filter(setting %in% c("gov","senate")) 
 
 # Summarise: Aggregate/summarise your data:
 # For example, counting the number of observations in topcan:
-topcan %>% summarise(n())
+topcan %>% dplyr::summarise(n())
 # Use group_by to count the observations within a specific group of topcan
 # For example within each type of election:
-topcan %>% group_by(setting) %>% summarise(obs=n())
+topcan %>% dplyr::group_by(setting) %>% dplyr::summarise(obs=n())
 # Or calculate the mean voteshare within each type of election:
-topcan %>% group_by(setting) %>% summarise(mean(percvote))
+topcan %>% dplyr::group_by(setting) %>% dplyr::summarise(mean(percvote))
 
 # Arrange: Sorts your data:
 # For example, alphabetically for elections, then for states and then descending in years within states:
-topcan <- topcan %>% arrange(setting, state, -year)
+topcan <- topcan %>% dplyr::arrange(setting, state, -year)
 # Have another look at the data, now sorted:
 topcan %>% View()
 
