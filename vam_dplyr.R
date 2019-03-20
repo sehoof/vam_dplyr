@@ -13,7 +13,7 @@ mydata <- readstata13::read.dta13("./data.dta")
 mydata %>% View()
 
 # Mutate: Generate a new variable and store it in mydata:
-mydata <- mydata %>% dplyr::mutate(percvote = voteshare*100)
+mydata <- mydata %>% dplyr::mutate(percvote = voteshare * 100)
 # Check if the new variable "percvote" is now there:
 names(mydata)
 
@@ -34,14 +34,14 @@ topcan <- mydata %>% dplyr::filter(percvote > 50)
 # We still have all variables from mydata in the new subset "topcan", but reduced number of observations:
 names(topcan)
 # Another example: Get all observations from senate and gubernatorial elections:
-mydata %>% dplyr::filter(setting %in% c("gov","senate")) 
+mydata %>% dplyr::filter(setting %in% c("gov", "senate")) 
 
 # Summarise: Aggregate/summarise your data:
 # For example, counting the number of observations in topcan:
 topcan %>% dplyr::summarise(n())
 # Use group_by to count the observations within a specific group of topcan
 # For example within each type of election:
-topcan %>% dplyr::group_by(setting) %>% dplyr::summarise(obs=n())
+topcan %>% dplyr::group_by(setting) %>% dplyr::summarise(obs = n())
 # Or calculate the mean voteshare within each type of election:
 topcan %>% dplyr::group_by(setting) %>% dplyr::summarise(mean(percvote))
 
@@ -53,8 +53,8 @@ topcan %>% View()
 
 # Some more generic examples:
 c(1,2,3) %>% .[1]
-seq(1,9) %>% matrix(.,ncol=3, byrow=T)
-seq(1,9) %>% matrix(.,ncol=3, byrow=T) %>% .[2,]
+seq(1,9) %>% matrix(., ncol = 3, byrow = T)
+seq(1,9) %>% matrix(., ncol = 3, byrow = T) %>% .[2, ]
 
 # Exercises:
 # [1] Generate a subset containing only US gubernatorial elections with narrow election outcomes (i.e. a 3% winning margin in this exercise).
