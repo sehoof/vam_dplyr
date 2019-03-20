@@ -69,10 +69,12 @@ gubdata %>% dplyr::summarise(min(voteshare))
 # Calculate the share of elections where a Democratic incumbent runs (mydata$incumbency = 1) in the Confederate states
 # vs the share of elections where a Republican incumbent runs (mydata$incumbency = -1).
 # install.packages("stringr")
+# install.packages("xml2")
 # install.packages("rvest")
 library(stringr)
+library(xml2)
 library(rvest)
-url <- read_html("https://en.wikipedia.org/wiki/Confederate_States_of_America")
+url <- xml2::read_html("https://en.wikipedia.org/wiki/Confederate_States_of_America")
 states <- rvest::html_nodes(url, "tr:nth-child(40) td")
 states <- rvest::html_text(states)
 states <- unlist(stringr::str_split(states, "\n"))[4:17]
@@ -108,7 +110,7 @@ summary(pooling)
 # In a second step, he controls for state-decade effects.
 #install.packages("plm")
 library(plm)
-pdata <- pdata.frame(gubdata, index = c("setting_unit_decade"))
+pdata <- plm::pdata.frame(gubdata, index = c("setting_unit_decade"))
 fereg <- plm::plm(voteshare ~ incumbency, data = pdata, model = "within")
 summary(fereg)
 # At last, he estimates the local average treatment effect of incumbency status on the Democratic voteshare in a
